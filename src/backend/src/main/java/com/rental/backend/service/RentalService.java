@@ -6,7 +6,10 @@ import com.rental.backend.entity.User;
 import com.rental.backend.repository.RentalRepository;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,10 +45,15 @@ public class RentalService {
     rental.setPrice(rentalDTO.getPrice());
     rental.setSurface(rentalDTO.getSurface());
     rental.setPicture(rentalDTO.getPicture());
-    // Récupération du propriétaire depuis le repository
-    User owner = userRepository.findById(rentalDTO.getOwnerId())
+
+    // Récupérer l'utilisateur connecté depuis le SecurityContext
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();  // suppose que le username est l'email
+    User owner = userRepository.findByEmail(email)
       .orElseThrow(() -> new RuntimeException("Propriétaire non trouvé"));
     rental.setOwner(owner);
+
+    // Définir createdAt et updatedAt si nécessaire
     rental = rentalRepository.save(rental);
     return convertToDTO(rental);
   }
@@ -63,5 +71,6 @@ public class RentalService {
     dto.setUpdatedAt(rental.getUpdatedAt());
     return dto;
   }
+
 }
 

@@ -1,13 +1,23 @@
 package com.rental.backend.controller;
 
 import com.rental.backend.dto.*;
+import com.rental.backend.repository.UserRepository;
 import com.rental.backend.service.AuthService;
+import com.rental.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private UserRepository userRepository;
 
   private final AuthService authService;
 
@@ -25,5 +35,12 @@ public class AuthController {
   public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
     var response = authService.login(request);
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<UserDTO> getMe() {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    UserDTO userDTO = userService.getUserByEmail(email);
+    return ResponseEntity.ok(userDTO);
   }
 }

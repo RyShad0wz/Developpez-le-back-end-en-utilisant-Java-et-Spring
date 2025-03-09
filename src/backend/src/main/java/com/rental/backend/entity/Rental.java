@@ -16,6 +16,7 @@ public class Rental {
   private String name;
   private Double surface;    // ou BigDecimal si tu préfères
   private Double price;      // idem
+
   private String picture;
   private String description;
 

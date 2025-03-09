@@ -22,6 +22,13 @@ public class UserService {
     return convertToDTO(user);
   }
 
+  public UserDTO getUserByEmail(String email) {
+    User user = userRepository.findByEmail(email)
+      .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+    return convertToDTO(user);
+  }
+
+
   public UserDTO createUser(UserDTO userDTO, String rawPassword) {
     // Pour cet exemple, on stocke le mot de passe tel quel (à remplacer par un hachage)
     User user = new User();
