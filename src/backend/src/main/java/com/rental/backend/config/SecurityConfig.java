@@ -19,7 +19,6 @@ public class SecurityConfig {
   @Autowired
   private CorsConfigurationSource corsConfigurationSource;
 
-
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
 
@@ -35,17 +34,20 @@ public class SecurityConfig {
       .csrf(csrf -> csrf.disable())
       .cors(cors -> cors.configurationSource(corsConfigurationSource))
       .authorizeHttpRequests(auth -> {
-        // On autorise l'accès public aux endpoints d'authentification
-        auth.requestMatchers("/auth/register", "/auth/login", "/api/rentals/**").permitAll();
-        auth.requestMatchers("/auth/me").permitAll();
+        // Autoriser l’accès public aux endpoints d’authentification et aux GET sur les utilisateurs et rentals
+        auth.requestMatchers("/auth/register", "/auth/login", "/auth/me").permitAll();
+        auth.requestMatchers(HttpMethod.GET, "/api/rentals/**").permitAll();
+        auth.requestMatchers(HttpMethod.GET, "/api/users/**").permitAll();
+        // Pour le reste, l’authentification est requise
         auth.anyRequest().authenticated();
       })
       .authenticationProvider(authenticationProvider)
-      // On place le filtre JWT avant UsernamePasswordAuthenticationFilter
+      // Ajout du filtre JWT
       .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
+
 
 
   @Bean
