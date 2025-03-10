@@ -25,24 +25,16 @@ public class Message {
 
   private String message;
 
-  @Column(name = "created_at")
-  private LocalDate createdAt;
-
-  @Column(name = "updated_at")
-  private LocalDate updatedAt;
-
   // Constructeurs, getters, setters
 
   public Message() {
   }
 
-public Message(Long id, Rental rental, User user, String message, LocalDate createdAt, LocalDate updatedAt) {
+public Message(Long id, Rental rental, User user, String message) {
     this.id = id;
     this.rental = rental;
     this.user = user;
     this.message = message;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   public Long getId() {
@@ -77,19 +69,4 @@ public Message(Long id, Rental rental, User user, String message, LocalDate crea
     this.message = message;
   }
 
-  public LocalDate getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDate createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public LocalDate getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(LocalDate updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 }

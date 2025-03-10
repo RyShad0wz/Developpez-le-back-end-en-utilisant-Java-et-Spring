@@ -54,8 +54,6 @@ public class MessageService {
     dto.setRentalId(message.getRental().getId());
     dto.setUserId(message.getUser().getId());
     dto.setMessage(message.getMessage());
-    dto.setCreatedAt(message.getCreatedAt());
-    dto.setUpdatedAt(message.getUpdatedAt());
     return dto;
   }
 }

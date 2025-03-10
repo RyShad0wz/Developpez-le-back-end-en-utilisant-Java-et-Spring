@@ -37,6 +37,7 @@ public class SecurityConfig {
         // Autoriser l’accès public aux endpoints d’authentification et aux GET sur les utilisateurs et rentals
         auth.requestMatchers("/auth/register", "/auth/login", "/auth/me").permitAll();
         auth.requestMatchers(HttpMethod.GET, "/api/rentals/**").permitAll();
+        auth.requestMatchers(HttpMethod.GET, "/api/messages/**").permitAll();
         auth.requestMatchers(HttpMethod.GET, "/api/users/**").permitAll();
         // Pour le reste, l’authentification est requise
         auth.anyRequest().authenticated();

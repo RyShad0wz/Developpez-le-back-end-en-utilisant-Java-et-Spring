@@ -8,18 +8,14 @@ public class MessageDTO {
   private Long rentalId;
   private Long userId;
   private String message;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
 
   public MessageDTO() {}
 
-  public MessageDTO(Long id, Long rentalId, Long userId, String message, LocalDate createdAt, LocalDate updatedAt) {
+  public MessageDTO(Long id, Long rentalId, Long userId, String message) {
     this.id = id;
     this.rentalId = rentalId;
     this.userId = userId;
     this.message = message;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   // Getters et Setters
@@ -48,17 +44,6 @@ public class MessageDTO {
   public void setMessage(String message) {
     this.message = message;
   }
-  public LocalDate getCreatedAt() {
-    return createdAt;
-  }
-  public void setCreatedAt(LocalDate createdAt) {
-    this.createdAt = createdAt;
-  }
-  public LocalDate getUpdatedAt() {
-    return updatedAt;
-  }
-  public void setUpdatedAt(LocalDate updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+
 }
 
