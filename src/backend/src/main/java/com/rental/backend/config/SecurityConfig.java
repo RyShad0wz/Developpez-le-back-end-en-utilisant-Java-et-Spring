@@ -38,7 +38,6 @@ public class SecurityConfig {
         // On autorise l'accès public aux endpoints d'authentification
         auth.requestMatchers("/auth/register", "/auth/login", "/api/rentals/**").permitAll();
         auth.requestMatchers("/auth/me").permitAll();
-        auth.requestMatchers(HttpMethod.POST, "/api/rentals").authenticated();
         auth.anyRequest().authenticated();
       })
       .authenticationProvider(authenticationProvider)

@@ -31,13 +31,20 @@ export class AppComponent implements OnInit {
   }
 
   public autoLog(): void {
-    this.authService.me().subscribe(
-      (user: User) => {
-        this.sessionService.logIn(user);
-      },
-      (_) => {
-        this.sessionService.logOut();
-      }
-    )
+    const token = localStorage.getItem('token'); // ou this.sessionService.getToken()
+    if (token) {
+      this.authService.me().subscribe(
+        (user: User) => {
+          this.sessionService.logIn(user);
+        },
+        error => {
+          this.sessionService.logOut();
+        }
+      );
+    } else {
+      // Pas de token, donc pas besoin d'appeler /auth/me
+      this.sessionService.logOut();
+    }
   }
+  
 }

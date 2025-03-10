@@ -14,8 +14,8 @@ import { RentalsService } from '../../services/rentals.service';
 })
 export class FormComponent implements OnInit {
 
-  public onUpdate: boolean = false;
-  public rentalForm: FormGroup | undefined;
+  public onUpdate = false;
+  public rentalForm!: FormGroup;
 
   private id: string | undefined;
 
@@ -26,62 +26,64 @@ export class FormComponent implements OnInit {
     private rentalsService: RentalsService,
     private sessionService: SessionService,
     private router: Router
-  ) {
-  }
+  ) { }
 
   public ngOnInit(): void {
     const url = this.router.url;
     if (url.includes('update')) {
       this.onUpdate = true;
       this.id = this.route.snapshot.paramMap.get('id')!;
-      this.rentalsService
-        .detail(this.id)
-        .subscribe((rental: Rental) => this.initForm(rental));
+      this.rentalsService.detail(this.id).subscribe((rental: Rental) => this.initForm(rental));
     } else {
       this.initForm();
     }
   }
 
   public submit(): void {
-    const formData = new FormData();
-    formData.append('name', this.rentalForm!.get('name')?.value);
-    formData.append('surface', this.rentalForm!.get('surface')?.value);
-    formData.append('price', this.rentalForm!.get('price')?.value);
+    const rentalData: any = {
+      name: this.rentalForm.get('name')?.value,
+      surface: this.rentalForm.get('surface')?.value,
+      price: this.rentalForm.get('price')?.value,
+      description: this.rentalForm.get('description')?.value,
+      picture: this.rentalForm.get('picture')?.value
+    };
+  
     if (!this.onUpdate) {
-      formData.append('picture', this.rentalForm!.get('picture')?.value._files[0]);
-    }
-    formData.append('description', this.rentalForm!.get('description')?.value);
-
-    if (!this.onUpdate) {
-      this.rentalsService
-        .create(formData)
-        .subscribe((rentalResponse: RentalResponse) => this.exitPage(rentalResponse));
+      this.rentalsService.create(rentalData).subscribe((rentalResponse: RentalResponse) => {
+        this.exitPage(rentalResponse);
+      });
     } else {
-      this.rentalsService
-        .update(this.id!, formData)
-        .subscribe((rentalResponse: RentalResponse) => this.exitPage(rentalResponse));
+      this.rentalsService.update(this.id!, rentalData).subscribe((rentalResponse: RentalResponse) => {
+        this.exitPage(rentalResponse);
+      });
     }
   }
+  
+  
 
   private initForm(rental?: Rental): void {
     console.log(rental);
     console.log(this.sessionService.user!.id);
-    if( (rental !== undefined) && (rental?.owner_id !== this.sessionService.user!.id)) {
+  
+    if (rental && rental.ownerId !== this.sessionService.user?.id) {
       this.router.navigate(['/rentals']);
+      return;
     }
+  
+    // Initialisation du FormGroup avec tous les champs
     this.rentalForm = this.fb.group({
       name: [rental ? rental.name : '', [Validators.required]],
       surface: [rental ? rental.surface : '', [Validators.required]],
       price: [rental ? rental.price : '', [Validators.required]],
       description: [rental ? rental.description : '', [Validators.required]],
+      // Pour la création, ou pour l'édition, on ajoute le contrôle "picture"
+      picture: [rental ? rental.picture : '', [Validators.required]]
     });
-    if (!this.onUpdate) {
-      this.rentalForm.addControl('picture', this.fb.control('', [Validators.required]));
-    }
   }
+  
 
   private exitPage(rentalResponse: RentalResponse): void {
-    this.matSnackBar.open(rentalResponse.message, "Close", { duration: 3000 });
+    this.matSnackBar.open(rentalResponse.message, 'Close', { duration: 3000 });
     this.router.navigate(['rentals']);
   }
 }

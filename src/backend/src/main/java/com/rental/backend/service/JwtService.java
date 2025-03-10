@@ -18,7 +18,6 @@ public class JwtService {
     return Jwts.builder()
       .setSubject(userDetails.getUsername()) // l'email
       .setIssuedAt(new Date(System.currentTimeMillis()))
-      // expiration dans 1 heure
       .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
       .signWith(getSignKey(), SignatureAlgorithm.HS256)
       .compact();
