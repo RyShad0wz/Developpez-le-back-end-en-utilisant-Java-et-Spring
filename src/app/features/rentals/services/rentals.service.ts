@@ -15,7 +15,7 @@ export class RentalsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // Retourne directement un Observable de Rental[]
+  
   public all(): Observable<Rental[]> {
     return this.httpClient.get<Rental[]>(this.rentalsUrl).pipe(
       catchError(error => {

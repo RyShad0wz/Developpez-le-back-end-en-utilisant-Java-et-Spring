@@ -24,7 +24,5 @@ export class OwnerInfoComponent implements OnChanges {
         .subscribe((user: User) => this.name = user.name);
     }
 
-
-
   }
 }
