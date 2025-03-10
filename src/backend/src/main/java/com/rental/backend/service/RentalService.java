@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,28 @@ public class RentalService {
     dto.setUpdatedAt(rental.getUpdatedAt());
     return dto;
   }
+
+  public RentalDTO update(Long id, RentalDTO rentalDTO) {
+    // Récupère le rental existant par son id
+    Rental existingRental = rentalRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+
+    // Met à jour les champs
+    existingRental.setName(rentalDTO.getName());
+    existingRental.setDescription(rentalDTO.getDescription());
+    existingRental.setPrice(rentalDTO.getPrice());
+    existingRental.setSurface(rentalDTO.getSurface());
+    existingRental.setPicture(rentalDTO.getPicture());
+    // Optionnel : mettre à jour la date de modification
+    existingRental.setUpdatedAt(LocalDateTime.now());
+
+    // Sauvegarde le rental mis à jour
+    Rental updatedRental = rentalRepository.save(existingRental);
+
+    // Convertit et retourne le DTO correspondant
+    return convertToDTO(updatedRental);
+  }
+
 
 }
 

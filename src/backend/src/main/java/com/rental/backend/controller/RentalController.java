@@ -4,6 +4,7 @@ import com.rental.backend.dto.RentalDTO;
 import com.rental.backend.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +33,18 @@ public class RentalController {
     return ResponseEntity.ok(rental);
   }
 
-  @PostMapping
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<RentalDTO> createRental(@RequestBody RentalDTO rentalDTO){
     RentalDTO createdRental = rentalService.createRental(rentalDTO);
     return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
   }
+
+  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalDTO rentalDTO) {
+    RentalDTO updatedRental = rentalService.update(id, rentalDTO);
+    return ResponseEntity.ok(updatedRental);
+  }
+
 
   // Vous pouvez ajouter ici des endpoints pour mettre à jour ou supprimer une location.
 }
