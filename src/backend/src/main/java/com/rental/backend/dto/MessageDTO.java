@@ -1,12 +1,21 @@
 package com.rental.backend.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+
+@Schema(description = "Objet de transfert pour les messages")
 public class MessageDTO {
+
+  @Schema(description = "Identifiant du message", example = "1")
   private Long id;
+
+  @Schema(description = "Identifiant de la location", example = "1")
   private Long rentalId;
+
+  @Schema(description = "Identifiant de l'utilisateur", example = "1")
   private Long userId;
+
+  @Schema(description = "Contenu du message", example = "Super séjour, je recommande !")
   private String message;
 
   public MessageDTO() {}

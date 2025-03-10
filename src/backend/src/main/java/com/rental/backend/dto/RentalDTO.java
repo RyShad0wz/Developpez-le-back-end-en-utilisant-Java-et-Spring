@@ -1,16 +1,37 @@
 package com.rental.backend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 
+@Schema(description = "DTO pour les locations")
 public class RentalDTO {
+
+  @Schema(description = "Identifiant unique", example = "1")
   private Long id;
+
+  @Schema(description = "Nom de la location", example = "Appartement T2")
   private String name;
+
+  @Schema(description = "Description de la location", example = "Appartement de 50m2")
   private String description;
+
+  @Schema(description = "Prix de la location", example = "500")
   private Double price;
+
+  @Schema(description = "Surface de la location", example = "50")
   private Double surface;
+
+  @Schema(description = "URL de l'image de la location", example = "https://example.com/image.jpg")
   private String picture;
+
+  @Schema(description = "Identifiant du propriétaire", example = "1")
   private Long ownerId;
+
+  @Schema(description = "Date de création de la location")
   private LocalDateTime createdAt;
+
+  @Schema(description = "Date de mise à jour de la location")
   private LocalDateTime updatedAt;
 
   public RentalDTO() {}

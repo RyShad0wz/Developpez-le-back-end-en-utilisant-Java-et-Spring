@@ -4,6 +4,7 @@ import com.rental.backend.dto.*;
 import com.rental.backend.repository.UserRepository;
 import com.rental.backend.service.AuthService;
 import com.rental.backend.service.UserService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@Schema(description = "Endpoints pour l'authentification")
 public class AuthController {
 
   @Autowired

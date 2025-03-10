@@ -1,8 +1,17 @@
 package com.rental.backend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Objet de transfert pour l'enregistrement")
 public class RegisterRequest {
+
+  @Schema(description = "Nom de l'utilisateur")
   private String name;
+
+  @Schema(description = "Adresse email de l'utilisateur")
   private String email;
+
+  @Schema(description = "Mot de passe de l'utilisateur")
   private String password;
 
   // getters, setters

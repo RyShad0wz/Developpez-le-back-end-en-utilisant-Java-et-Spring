@@ -1,5 +1,6 @@
 package com.rental.backend.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.security.Timestamp;
@@ -10,15 +11,23 @@ import java.time.LocalDateTime;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "Identifiant unique", example = "1")
   private Long id;
 
+  @Schema(description = "Adresse email", example = "john@example.com")
   private String email;
+
+  @Schema(description = "Nom de l'utilisateur", example = "John Doe")
   private String name;
+
+  @Schema(description = "Mot de passe", example = "secret")
   private String password;
 
+  @Schema(description = "Date de création de l'utilisateur")
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
+  @Schema(description = "Date de mise à jour de l'utilisateur")
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 

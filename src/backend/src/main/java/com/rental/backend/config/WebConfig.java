@@ -1,5 +1,6 @@
 package com.rental.backend.config;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -9,6 +10,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
+@Schema(description = "Configuration de l'application web")
 public class WebConfig {
 
   @Bean

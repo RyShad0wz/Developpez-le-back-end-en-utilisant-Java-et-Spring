@@ -35,6 +35,7 @@ public class SecurityConfig {
       .cors(cors -> cors.configurationSource(corsConfigurationSource))
       .authorizeHttpRequests(auth -> {
         // Autoriser l’accès public aux endpoints d’authentification et aux GET sur les utilisateurs et rentals
+        auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
         auth.requestMatchers("/auth/register", "/auth/login", "/auth/me").permitAll();
         auth.requestMatchers(HttpMethod.GET, "/api/rentals/**").permitAll();
         auth.requestMatchers(HttpMethod.GET, "/api/messages/**").permitAll();

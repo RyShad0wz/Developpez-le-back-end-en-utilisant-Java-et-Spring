@@ -1,5 +1,6 @@
 package com.rental.backend.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,28 +12,40 @@ public class Rental {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "Identifiant unique", example = "1")
   private Long id;
 
+  @Schema(description = "Nom de la maison à louer", example = "Appartement cosy")
   private String name;
-  private Double surface;    // ou BigDecimal si tu préfères
-  private Double price;      // idem
 
+  @Schema(description = "Surface en m²", example = "45.0")
+  private Double surface;
+
+  @Schema(description = "Prix de la location par nuit", example = "50.0")
+  private Double price;
+
+  @Schema(description = "URL de l'image", example = "https://www.example.com/picture.jpg")
   private String picture;
+
+  @Schema(description = "Description de la location", example = "Appartement cosy avec vue sur la mer")
   private String description;
 
-  // Relation vers User (le propriétaire)
-  // Si tu veux récupérer l'objet User complet depuis Rental
+  // Relation vers l'utilisateur propriétaire
+  @Schema(description = "Propriétaire de la location")
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)
   private User owner;
 
+  @Schema(description = "Date de création de la location")
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
+  @Schema(description = "Date de mise à jour de la location")
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
   // Constructeurs, getters, setters...
+
   public Rental() {
   }
 

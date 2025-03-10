@@ -2,6 +2,7 @@ package com.rental.backend.controller;
 
 import com.rental.backend.dto.RentalDTO;
 import com.rental.backend.service.RentalService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rentals")
+@Schema(description = "Endpoints pour les locations")
 public class RentalController {
 
   private final RentalService rentalService;

@@ -1,12 +1,25 @@
 package com.rental.backend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 
+@Schema(description = "Objet de transfert pour les utilisateurs")
 public class UserDTO {
+
+  @Schema(description = "Identifiant de l'utilisateur", example = "1")
   private Long id;
+
+  @Schema(description = "Nom de l'utilisateur", example = "John Doe")
   private String name;
+
+  @Schema(description = "Adresse email de l'utilisateur", example = "john@example.com")
   private String email;
+
+  @Schema(description = "Date de création de l'utilisateur", example = "2021-06-01T12:00:00")
   private LocalDateTime createdAt;
+
+  @Schema(description = "Date de mise à jour de l'utilisateur", example = "2021-06-01T12:00:00")
   private LocalDateTime updatedAt;
 
   public UserDTO() {}

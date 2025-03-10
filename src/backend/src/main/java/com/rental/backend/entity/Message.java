@@ -1,5 +1,6 @@
 package com.rental.backend.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,18 +12,22 @@ public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "Identifiant unique", example = "1")
   private Long id;
 
   // Relation vers la location
   @ManyToOne
   @JoinColumn(name = "rental_id", nullable = false)
+  @Schema(description = "Location associée au message")
   private Rental rental;
 
   // Relation vers l'utilisateur
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
+  @Schema(description = "Utilisateur ayant posté le message")
   private User user;
 
+  @Schema(description = "Contenu du message", example = "Super séjour, je recommande !")
   private String message;
 
   // Constructeurs, getters, setters
