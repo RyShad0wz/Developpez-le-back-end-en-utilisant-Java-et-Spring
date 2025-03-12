@@ -53,7 +53,9 @@ L’application démarre sur le port 8080.
 
 Si nécessaire, créez la base de données « rental_db » avec MySQL. 
 
-(La propriété createDatabaseIfNotExist=true permet de la créer automatiquement si elle n’existe pas.) Les entités définies dans le code (USERS, RENTALS, MESSAGES, etc.) seront créées/mises à jour automatiquement grâce à Hibernate.
+(La propriété createDatabaseIfNotExist=true permet de la créer automatiquement si elle n’existe pas.) 
+
+Les entités définies dans le code (USERS, RENTALS, MESSAGES, etc.) seront créées/mises à jour automatiquement grâce à Hibernate.
 
 # Documentation de l’API (Swagger)
 
