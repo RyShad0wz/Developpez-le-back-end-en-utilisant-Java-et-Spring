@@ -78,8 +78,11 @@ La documentation interactive de l’API est fournie par Springdoc OpenAPI. • S
 
 
 # Remarques
+
 – Les endpoints REST sont documentés via Swagger (voir point 4).
+
 – La sécurité est assurée par JWT et une configuration Spring Security adaptée.
+
 – Les données de la base sont gérées automatiquement via Hibernate.
 
 
