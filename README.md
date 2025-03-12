@@ -1,55 +1,85 @@
 # Estate
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
+# Présentation générale
+Ce dépôt contient le code du back-end de l’application Rental, développé en Java avec Spring Boot. Il fournit des endpoints REST pour la gestion des utilisateurs, des locations (rentals) et des messages.
 
-## Start the project
+# Installation et lancement Front-end
 
-Git clone:
+Clonez le dépot GitHub :
 
-> git clone https://github.com/OpenClassrooms-Student-Center/P3-Full-Stack-portail-locataire
+git clone https://github.com/RyShad0wz/Developpez-le-back-end-en-utilisant-Java-et-Spring
 
-Go inside folder:
+Installation des dépendences :
 
-> cd P3-Full-Stack-portail-locataire
+npm install
 
-Install dependencies:
+npm run start ou ng serve
 
-> npm install
-
-Launch Front-end:
-
-> npm run start;
+# Installation et lancement Back-end
 
 
-## Ressources
+Clonez le dépôt GitHub sur votre machine.
 
-### Mockoon env
+git clone https://github.com/RyShad0wz/Developpez-le-back-end-en-utilisant-Java-et-Spring
+cd backend
 
-Download Mockoon here: https://mockoon.com/download/
+Dans le fichier « src/main/resources/application.properties », vérifiez la configuration suivante : 
 
-After installing you could load the environement
+• Base de données MySQL :
 
-> ressources/mockoon/rental-oc.json
+spring.datasource.url=jdbc:mysql://localhost:3306/rental_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=
 
-directly inside Mockoon 
+• Hibernate (création/mise à jour automatique des tables) :
 
-> File > Open environmement
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.open-in-view=false
 
-For launching the Mockoon server click on play bouton
+• Clé de signature JWT :
 
-Mockoon documentation: https://mockoon.com/docs/latest/about/
+jwt.signing.key=fba828e9-bde9-4335-b192-c8aecccdc83a
 
-### Postman collection
+Lancez l’application en exécutant la classe principale (RentalApplication) depuis votre IDE ou via Maven.
 
-For Postman import the collection
+L’application démarre sur le port 8080.
 
-> ressources/postman/rental.postman_collection.json 
+# Installation de la base de données
 
-by following the documentation: 
+Si nécessaire, créez la base de données « rental_db » avec MySQL. (La propriété createDatabaseIfNotExist=true permet de la créer automatiquement si elle n’existe pas.) Les entités définies dans le code (USERS, RENTALS, MESSAGES, etc.) seront créées/mises à jour automatiquement grâce à Hibernate.
 
-https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman
+# Documentation de l’API (Swagger)
+
+La documentation interactive de l’API est fournie par Springdoc OpenAPI. • Swagger UI : http://localhost:8080/swagger-ui/index.html
+• Documentation OpenAPI JSON : http://localhost:8080/v3/api-docs
+
+# Endpoints principaux
+
+• Authentification et Utilisateurs
+
+– POST /auth/register : inscription d’un nouvel utilisateur
+– POST /auth/login : authentification et obtention d’un token JWT
+– GET /auth/me : récupération des informations de l’utilisateur connecté
+– GET /api/users/{id} : récupération d’un utilisateur par ID
+– POST /api/users/register : alternative pour l’inscription
+
+• Locations (Rentals)
+
+– GET /api/rentals : liste de toutes les locations
+– GET /api/rentals/{id} : récupération d’une location par ID
+– POST /api/rentals : création d’une location (authentification requise)
+– PUT /api/rentals/{id} : mise à jour d’une location (authentification requise)
+
+• Messages
+
+– GET /api/messages/rental/{rentalId} : liste des messages d’une location
+– POST /api/messages : envoi d’un message (authentification requise)
 
 
-### MySQL
+Remarques
+– Les endpoints REST sont documentés via Swagger (voir point 4).
+– La sécurité est assurée par JWT et une configuration Spring Security adaptée.
+– Les données de la base sont gérées automatiquement via Hibernate.
 
-SQL script for creating the schema is available `ressources/sql/script.sql`
+
