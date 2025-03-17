@@ -41,7 +41,7 @@ public class UserService {
   }
 
   private UserDTO convertToDTO(User user){
-    // On suppose que UserDTO possède un constructeur (id, name, email, createdAt, updatedAt)
+
     return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getCreatedAt(), user.getUpdatedAt());
   }
 }

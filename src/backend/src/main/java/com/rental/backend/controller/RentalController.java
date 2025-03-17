@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -38,10 +40,14 @@ public class RentalController {
       content = @Content(schema = @Schema(implementation = RentalDTO.class, type = "array"))),
     @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
   })
-  public ResponseEntity<List<RentalDTO>> getAllRentals() {
+  public ResponseEntity<Map<String, List<RentalDTO>>> getAllRentals() {
     List<RentalDTO> rentals = rentalService.getAllRentals();
-    return ResponseEntity.ok(rentals);
+    Map<String, List<RentalDTO>> response = new HashMap<>();
+    response.put("rentals", rentals);
+
+    return ResponseEntity.ok(response);
   }
+
 
   @GetMapping("/{id}")
   @Operation(summary = "Obtenir une location par son ID", description = "Récupère les détails d'une location spécifique")

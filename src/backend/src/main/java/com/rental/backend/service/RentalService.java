@@ -74,17 +74,15 @@ public class RentalService {
   }
 
   public RentalDTO update(Long id, RentalDTO rentalDTO) {
-    // Récupère le rental existant par son id
+
     Rental existingRental = rentalRepository.findById(id)
       .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
 
-    // Met à jour les champs
     existingRental.setName(rentalDTO.getName());
     existingRental.setDescription(rentalDTO.getDescription());
     existingRental.setPrice(rentalDTO.getPrice());
     existingRental.setSurface(rentalDTO.getSurface());
     existingRental.setPicture(rentalDTO.getPicture());
-    // Optionnel : mettre à jour la date de modification
     existingRental.setUpdatedAt(LocalDateTime.now());
 
     // Sauvegarde le rental mis à jour

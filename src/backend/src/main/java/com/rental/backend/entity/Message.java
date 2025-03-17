@@ -1,5 +1,6 @@
 package com.rental.backend.entity;
 
+import com.rental.backend.dto.MessageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
@@ -32,11 +33,10 @@ public class Message {
   public Message() {
   }
 
-public Message(Long id, Rental rental, User user, String message) {
-    this.id = id;
+  public Message(MessageDTO messageDTO, Rental rental, User user) {
     this.rental = rental;
     this.user = user;
-    this.message = message;
+    this.message = messageDTO.getMessage();
   }
 
   public Long getId() {

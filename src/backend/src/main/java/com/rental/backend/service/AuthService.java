@@ -52,9 +52,9 @@ public class AuthService {
     return new AuthenticationResponse(token);
   }
 
-  // 2) Connexion
+
   public AuthenticationResponse login(LoginRequest request) {
-    // Tente d'authentifier via Spring Security
+
     try {
       authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
@@ -66,14 +66,13 @@ public class AuthService {
       throw new RuntimeException("Email ou mot de passe invalide");
     }
 
-    // Récupérer l'utilisateur
+
     var user = userRepository.findByEmail(request.getEmail())
       .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-    // Générer un token
     var userDetails = org.springframework.security.core.userdetails.User.builder()
       .username(user.getEmail())
-      .password(user.getPassword()) // haché
+      .password(user.getPassword())
       .authorities("ROLE_USER")
       .build();
 

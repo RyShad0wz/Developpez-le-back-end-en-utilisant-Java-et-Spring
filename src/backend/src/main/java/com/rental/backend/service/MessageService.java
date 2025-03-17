@@ -1,6 +1,7 @@
 package com.rental.backend.service;
 
 import com.rental.backend.dto.MessageDTO;
+import com.rental.backend.dto.MessageResponseDTO;
 import com.rental.backend.entity.Message;
 import com.rental.backend.entity.Rental;
 import com.rental.backend.entity.User;
@@ -15,45 +16,31 @@ import java.util.stream.Collectors;
 @Service
 public class MessageService {
 
-  private final MessageRepository messageRepository;
-  private final RentalRepository rentalRepository;
-  private final UserRepository userRepository;
+  @Autowired
+  private MessageRepository messageRepository;
 
   @Autowired
-  public MessageService(MessageRepository messageRepository, RentalRepository rentalRepository, UserRepository userRepository){
-    this.messageRepository = messageRepository;
-    this.rentalRepository = rentalRepository;
-    this.userRepository = userRepository;
-  }
+  private RentalRepository rentalRepository;
 
-  public List<MessageDTO> getMessagesByRentalId(Long rental_id){
-    List<Message> messages = messageRepository.findByRental_Id(rental_id);
-    return messages.stream()
-      .map(this::convertToDTO)
-      .collect(Collectors.toList());
-  }
+  @Autowired
+  private UserRepository userRepository;
 
-  public MessageDTO sendMessage(MessageDTO messageDTO){
-    Message message = new Message();
-    message.setMessage(messageDTO.getMessage());
-    // Récupérer la location
+  public MessageResponseDTO sendMessage(MessageDTO messageDTO) {
+    // Récupérer la location et l'utilisateur
     Rental rental = rentalRepository.findById(messageDTO.getRentalId())
-      .orElseThrow(() -> new RuntimeException("Location non trouvée"));
-    message.setRental(rental);
-    // Récupérer l'utilisateur
-    User user = userRepository.findById(messageDTO.getUserId())
-      .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-    message.setUser(user);
-    message = messageRepository.save(message);
-    return convertToDTO(message);
-  }
+      .orElseThrow(() -> new IllegalArgumentException("Location non trouvée"));
 
-  private MessageDTO convertToDTO(Message message){
-    MessageDTO dto = new MessageDTO();
-    dto.setId(message.getId());
-    dto.setRentalId(message.getRental().getId());
-    dto.setUserId(message.getUser().getId());
-    dto.setMessage(message.getMessage());
-    return dto;
+    User user = userRepository.findById(messageDTO.getUserId())
+      .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+
+    // Créer et sauvegarder le message
+    Message message = new Message();
+    message.setRental(rental);
+    message.setUser(user);
+    message.setMessage(messageDTO.getMessage());
+    messageRepository.save(message);
+
+    // Retourner la réponse de succès
+    return new MessageResponseDTO("Message send with success");
   }
 }

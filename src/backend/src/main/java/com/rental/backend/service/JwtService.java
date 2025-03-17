@@ -12,11 +12,11 @@ import java.util.Date;
 public class JwtService {
 
   @Value("${jwt.signing.key}")
-  private String secretKey; // on lit la clé depuis application.properties
+  private String secretKey;
 
   public String generateToken(UserDetails userDetails) {
     return Jwts.builder()
-      .setSubject(userDetails.getUsername()) // l'email
+      .setSubject(userDetails.getUsername())
       .setIssuedAt(new Date(System.currentTimeMillis()))
       .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
       .signWith(getSignKey(), SignatureAlgorithm.HS256)
