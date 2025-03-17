@@ -17,19 +17,19 @@ public class UserDTO {
   private String email;
 
   @Schema(description = "Date de création de l'utilisateur", example = "2021-06-01T12:00:00")
-  private LocalDateTime createdAt;
+  private LocalDateTime created_at;
 
   @Schema(description = "Date de mise à jour de l'utilisateur", example = "2021-06-01T12:00:00")
-  private LocalDateTime updatedAt;
+  private LocalDateTime updated_at;
 
   public UserDTO() {}
 
-  public UserDTO(Long id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public UserDTO(Long id, String name, String email, LocalDateTime created_at, LocalDateTime updated_at) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
   }
 
   // Getters et Setters
@@ -53,15 +53,15 @@ public class UserDTO {
     this.email = email;
   }
   public LocalDateTime getCreatedAt() {
-    return createdAt;
+    return created_at;
   }
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setCreatedAt(LocalDateTime created_at) {
+    this.created_at = created_at;
   }
   public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+    return updated_at;
   }
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
+  public void setUpdatedAt(LocalDateTime updated_at) {
+    this.updated_at = updated_at;
   }
 }

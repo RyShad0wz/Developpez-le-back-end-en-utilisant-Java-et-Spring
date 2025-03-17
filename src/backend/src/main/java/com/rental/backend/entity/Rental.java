@@ -38,18 +38,18 @@ public class Rental {
 
   @Schema(description = "Date de création de la location")
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDateTime created_at;
 
   @Schema(description = "Date de mise à jour de la location")
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private LocalDateTime updated_at;
 
   // Constructeurs, getters, setters...
 
   public Rental() {
   }
 
-  public Rental(Long id, String name, Double surface, Double price, String picture, String description, User owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public Rental(Long id, String name, Double surface, Double price, String picture, String description, User owner, LocalDateTime created_at, LocalDateTime updated_at) {
     this.id = id;
     this.name = name;
     this.surface = surface;
@@ -57,8 +57,8 @@ public class Rental {
     this.picture = picture;
     this.description = description;
     this.owner = owner;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
   }
 
   // ... getters & setters ...
@@ -120,19 +120,19 @@ public class Rental {
   }
 
   public LocalDateTime getCreatedAt() {
-    return createdAt;
+    return created_at;
   }
 
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setCreatedAt(LocalDateTime created_at) {
+    this.created_at = created_at;
   }
 
   public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+    return updated_at;
   }
 
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
+  public void setUpdatedAt(LocalDateTime updated_at) {
+    this.updated_at = updated_at;
   }
 }
 

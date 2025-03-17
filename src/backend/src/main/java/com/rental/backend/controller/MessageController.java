@@ -30,7 +30,7 @@ public class MessageController {
     this.messageService = messageService;
   }
 
-  @GetMapping("/rental/{rentalId}")
+  @GetMapping("/rental/{rental_id}")
   @Operation(summary = "Récupérer les messages d'une location", description = "Récupère tous les messages associés à une location spécifique")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Messages récupérés avec succès",
@@ -40,9 +40,9 @@ public class MessageController {
   })
   public ResponseEntity<List<MessageDTO>> getMessagesByRental(
     @Parameter(description = "ID de la location", example = "1", required = true)
-    @PathVariable Long rentalId
+    @PathVariable Long rental_id
   ) {
-    List<MessageDTO> messages = messageService.getMessagesByRentalId(rentalId);
+    List<MessageDTO> messages = messageService.getMessagesByRentalId(rental_id);
     return ResponseEntity.ok(messages);
   }
 

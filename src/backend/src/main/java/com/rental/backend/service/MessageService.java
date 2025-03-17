@@ -26,8 +26,8 @@ public class MessageService {
     this.userRepository = userRepository;
   }
 
-  public List<MessageDTO> getMessagesByRentalId(Long rentalId){
-    List<Message> messages = messageRepository.findByRental_Id(rentalId);
+  public List<MessageDTO> getMessagesByRentalId(Long rental_id){
+    List<Message> messages = messageRepository.findByRental_Id(rental_id);
     return messages.stream()
       .map(this::convertToDTO)
       .collect(Collectors.toList());

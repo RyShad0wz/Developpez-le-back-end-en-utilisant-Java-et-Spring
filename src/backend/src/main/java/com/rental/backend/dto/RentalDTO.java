@@ -26,26 +26,26 @@ public class RentalDTO {
   private String picture;
 
   @Schema(description = "Identifiant du propriétaire", example = "1")
-  private Long ownerId;
+  private Long owner_id;
 
   @Schema(description = "Date de création de la location")
-  private LocalDateTime createdAt;
+  private LocalDateTime created_at;
 
   @Schema(description = "Date de mise à jour de la location")
-  private LocalDateTime updatedAt;
+  private LocalDateTime updated_at;
 
   public RentalDTO() {}
 
-  public RentalDTO(Long id, String name, String description, Double price, Double surface, String picture, Long ownerId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public RentalDTO(Long id, String name, String description, Double price, Double surface, String picture, Long owner_id, LocalDateTime created_at, LocalDateTime updated_at) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
     this.surface = surface;
     this.picture = picture;
-    this.ownerId = ownerId;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.owner_id = owner_id;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
   }
 
   // Getters et Setters
@@ -87,22 +87,22 @@ public class RentalDTO {
     this.picture = picture;
   }
   public Long getOwnerId() {
-    return ownerId;
+    return owner_id;
   }
-  public void setOwnerId(Long ownerId) {
-    this.ownerId = ownerId;
+  public void setOwnerId(Long owner_id) {
+    this.owner_id = owner_id;
   }
   public LocalDateTime getCreatedAt() {
-    return createdAt;
+    return created_at;
   }
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setCreatedAt(LocalDateTime created_at) {
+    this.created_at = created_at;
   }
   public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+    return updated_at;
   }
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
+  public void setUpdatedAt(LocalDateTime updated_at) {
+    this.updated_at = updated_at;
   }
 }
 

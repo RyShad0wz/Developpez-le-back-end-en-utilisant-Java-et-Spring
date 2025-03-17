@@ -3,9 +3,6 @@ package com.rental.backend.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "MESSAGES")
 public class Message {

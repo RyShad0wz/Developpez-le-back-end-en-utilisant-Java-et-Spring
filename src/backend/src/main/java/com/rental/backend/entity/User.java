@@ -3,11 +3,10 @@ package com.rental.backend.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USER")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,23 +24,23 @@ public class User {
 
   @Schema(description = "Date de création de l'utilisateur")
   @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  private LocalDateTime created_at;
 
   @Schema(description = "Date de mise à jour de l'utilisateur")
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private LocalDateTime updated_at;
 
   public User() {
 
   }
 
-  public User(Long id, String email, String name, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public User(Long id, String email, String name, String password, LocalDateTime created_at, LocalDateTime updated_at) {
     this.id = id;
     this.email = email;
     this.name = name;
     this.password = password;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
   }
 
   public Long getId() {
@@ -73,17 +72,17 @@ public class User {
   }
 
   public LocalDateTime getCreatedAt() {
-    return createdAt;
+    return created_at;
   }
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setCreatedAt(LocalDateTime created_at) {
+    this.created_at = created_at;
   }
 
   public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+    return updated_at;
   }
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
+  public void setUpdatedAt(LocalDateTime updated_at) {
+    this.updated_at = updated_at;
   }
 
 }

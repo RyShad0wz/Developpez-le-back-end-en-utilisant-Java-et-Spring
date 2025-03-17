@@ -10,20 +10,20 @@ public class MessageDTO {
   private Long id;
 
   @Schema(description = "Identifiant de la location", example = "1")
-  private Long rentalId;
+  private Long rental_id;
 
   @Schema(description = "Identifiant de l'utilisateur", example = "1")
-  private Long userId;
+  private Long user_id;
 
   @Schema(description = "Contenu du message", example = "Super séjour, je recommande !")
   private String message;
 
   public MessageDTO() {}
 
-  public MessageDTO(Long id, Long rentalId, Long userId, String message) {
+  public MessageDTO(Long id, Long rental_id, Long user_id, String message) {
     this.id = id;
-    this.rentalId = rentalId;
-    this.userId = userId;
+    this.rental_id = rental_id;
+    this.user_id = user_id;
     this.message = message;
   }
 
@@ -36,16 +36,16 @@ public class MessageDTO {
     this.id = id;
   }
   public Long getRentalId() {
-    return rentalId;
+    return rental_id;
   }
-  public void setRentalId(Long rentalId) {
-    this.rentalId = rentalId;
+  public void setRentalId(Long rental_id) {
+    this.rental_id = rental_id;
   }
   public Long getUserId() {
-    return userId;
+    return user_id;
   }
-  public void setUserId(Long userId) {
-    this.userId = userId;
+  public void setUserId(Long user_id) {
+    this.user_id = user_id;
   }
   public String getMessage() {
     return message;
