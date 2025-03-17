@@ -44,10 +44,8 @@ public class RentalController {
     List<RentalDTO> rentals = rentalService.getAllRentals();
     Map<String, List<RentalDTO>> response = new HashMap<>();
     response.put("rentals", rentals);
-
     return ResponseEntity.ok(response);
   }
-
 
   @GetMapping("/{id}")
   @Operation(summary = "Obtenir une location par son ID", description = "Récupère les détails d'une location spécifique")
@@ -69,11 +67,11 @@ public class RentalController {
   @Operation(summary = "Créer une nouvelle location", description = "Ajoute une nouvelle location à la base de données")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "Location créée avec succès",
-      content = @Content(schema = @Schema(implementation = RentalDTO.class))),
+      content = @Content(schema = @Schema(implementation = Map.class))),
     @ApiResponse(responseCode = "400", description = "Données de la location invalides"),
     @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
   })
-  public ResponseEntity<RentalDTO> createRental(
+  public ResponseEntity<Map<String, Object>> createRental(
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
       description = "Données de la location à créer",
       required = true,
@@ -81,19 +79,22 @@ public class RentalController {
     @Valid @RequestBody RentalDTO rentalDTO
   ) {
     RentalDTO createdRental = rentalService.createRental(rentalDTO);
-    return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "Rental created !");
+    response.put("rental", createdRental);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   @Operation(summary = "Mettre à jour une location", description = "Met à jour les informations d'une location existante")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Location mise à jour avec succès",
-      content = @Content(schema = @Schema(implementation = RentalDTO.class))),
+      content = @Content(schema = @Schema(implementation = Map.class))),
     @ApiResponse(responseCode = "400", description = "Données de la location invalides"),
     @ApiResponse(responseCode = "404", description = "Location non trouvée"),
     @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
   })
-  public ResponseEntity<RentalDTO> updateRental(
+  public ResponseEntity<Map<String, Object>> updateRental(
     @Parameter(description = "ID de la location à mettre à jour", example = "1", required = true)
     @PathVariable Long id,
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -103,6 +104,9 @@ public class RentalController {
     @Valid @RequestBody RentalDTO rentalDTO
   ) {
     RentalDTO updatedRental = rentalService.update(id, rentalDTO);
-    return ResponseEntity.ok(updatedRental);
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "Rental updated !");
+    response.put("rental", updatedRental);
+    return ResponseEntity.ok(response);
   }
 }
