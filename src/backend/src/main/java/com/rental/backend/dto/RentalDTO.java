@@ -1,6 +1,11 @@
 package com.rental.backend.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 
 import java.time.LocalDateTime;
 
@@ -10,28 +15,38 @@ public class RentalDTO {
   @Schema(description = "Identifiant unique", example = "1")
   private Long id;
 
-  @Schema(description = "Nom de la location", example = "Appartement T2")
+  @NotBlank(message = "Le nom de la location est obligatoire")
+  @Size(max = 100, message = "Le nom ne doit pas dépasser 100 caractères")
+  @Schema(description = "Nom de la location", example = "Appartement T2", required = true)
   private String name;
 
-  @Schema(description = "Description de la location", example = "Appartement de 50m2")
+  @NotBlank(message = "La description est obligatoire")
+  @Size(max = 500, message = "La description ne doit pas dépasser 500 caractères")
+  @Schema(description = "Description de la location", example = "Appartement de 50m2", required = true)
   private String description;
 
-  @Schema(description = "Prix de la location", example = "500")
+  @NotNull(message = "Le prix est obligatoire")
+  @Positive(message = "Le prix doit être un nombre positif")
+  @Schema(description = "Prix de la location", example = "500.0", required = true)
   private Double price;
 
-  @Schema(description = "Surface de la location", example = "50")
+  @NotNull(message = "La surface est obligatoire")
+  @Positive(message = "La surface doit être un nombre positif")
+  @Schema(description = "Surface de la location", example = "50.0", required = true)
   private Double surface;
 
-  @Schema(description = "URL de l'image de la location", example = "https://example.com/image.jpg")
+  @NotBlank(message = "L'URL de l'image est obligatoire")
+  @Schema(description = "URL de l'image de la location", example = "https://example.com/image.jpg", required = true)
   private String picture;
 
-  @Schema(description = "Identifiant du propriétaire", example = "1")
+  @NotNull(message = "L'identifiant du propriétaire est obligatoire")
+  @Schema(description = "Identifiant du propriétaire", example = "1", required = true)
   private Long ownerId;
 
-  @Schema(description = "Date de création de la location")
+  @Schema(description = "Date de création de la location", example = "2023-10-01T12:00:00")
   private LocalDateTime createdAt;
 
-  @Schema(description = "Date de mise à jour de la location")
+  @Schema(description = "Date de mise à jour de la location", example = "2023-10-01T12:00:00")
   private LocalDateTime updatedAt;
 
   public RentalDTO() {}
@@ -105,4 +120,3 @@ public class RentalDTO {
     this.updatedAt = updatedAt;
   }
 }
-
