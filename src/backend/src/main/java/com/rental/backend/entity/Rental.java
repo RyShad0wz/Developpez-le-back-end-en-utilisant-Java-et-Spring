@@ -1,5 +1,7 @@
 package com.rental.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
@@ -34,14 +36,19 @@ public class Rental {
   @Schema(description = "Propriétaire de la location")
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)
+  @JsonProperty("owner_id")
   private User owner;
 
   @Schema(description = "Date de création de la location")
   @Column(name = "created_at")
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("created_at")
   private LocalDateTime created_at;
 
   @Schema(description = "Date de mise à jour de la location")
   @Column(name = "updated_at")
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("updated_at")
   private LocalDateTime updated_at;
 
   // Constructeurs, getters, setters...

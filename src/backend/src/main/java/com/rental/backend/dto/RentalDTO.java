@@ -1,5 +1,7 @@
 package com.rental.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -26,26 +28,31 @@ public class RentalDTO {
   private String picture;
 
   @Schema(description = "Identifiant du propriétaire", example = "1")
-  private Long owner_id;
+  @JsonProperty("owner_id")
+  private Long ownerId;
 
   @Schema(description = "Date de création de la location")
-  private LocalDateTime created_at;
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("created_at")
+  private LocalDateTime createdAt;
 
   @Schema(description = "Date de mise à jour de la location")
-  private LocalDateTime updated_at;
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("updated_at")
+  private LocalDateTime updatedAt;
 
   public RentalDTO() {}
 
-  public RentalDTO(Long id, String name, String description, Double price, Double surface, String picture, Long owner_id, LocalDateTime created_at, LocalDateTime updated_at) {
+  public RentalDTO(Long id, String name, String description, Double price, Double surface, String picture, Long ownerId, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
     this.surface = surface;
     this.picture = picture;
-    this.owner_id = owner_id;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.ownerId = ownerId;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   // Getters et Setters
@@ -87,22 +94,22 @@ public class RentalDTO {
     this.picture = picture;
   }
   public Long getOwnerId() {
-    return owner_id;
+    return ownerId;
   }
-  public void setOwnerId(Long owner_id) {
-    this.owner_id = owner_id;
+  public void setOwnerId(Long ownerId) {
+    this.ownerId = ownerId;
   }
   public LocalDateTime getCreatedAt() {
-    return created_at;
+    return createdAt;
   }
-  public void setCreatedAt(LocalDateTime created_at) {
-    this.created_at = created_at;
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
   public LocalDateTime getUpdatedAt() {
-    return updated_at;
+    return updatedAt;
   }
-  public void setUpdatedAt(LocalDateTime updated_at) {
-    this.updated_at = updated_at;
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }
 

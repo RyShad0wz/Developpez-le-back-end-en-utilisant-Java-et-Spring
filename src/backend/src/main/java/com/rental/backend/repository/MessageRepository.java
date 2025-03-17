@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
   // Ici, on suppose que l'entité Message possède une relation ManyToOne vers Rental via le champ "rental"
-  List<Message> findByRental_Id(Long rental_id);
+  List<Message> findByRental_Id(Long rentalId);
 }
 

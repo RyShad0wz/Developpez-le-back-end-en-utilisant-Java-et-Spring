@@ -1,5 +1,7 @@
 package com.rental.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -16,20 +18,24 @@ public class UserDTO {
   @Schema(description = "Adresse email de l'utilisateur", example = "john@example.com")
   private String email;
 
-  @Schema(description = "Date de création de l'utilisateur", example = "2021-06-01T12:00:00")
-  private LocalDateTime created_at;
+  @Schema(description = "Date de création de l'utilisateur", example = "2021-06-01")
+  @JsonFormat(pattern = "yyyy/MM/dd") // Format de date personnalisé
+  @JsonProperty("created_at")
+  private LocalDateTime createdAt;
 
-  @Schema(description = "Date de mise à jour de l'utilisateur", example = "2021-06-01T12:00:00")
-  private LocalDateTime updated_at;
+  @Schema(description = "Date de mise à jour de l'utilisateur", example = "2021-06-01")
+  @JsonFormat(pattern = "yyyy/MM/dd") // Format de date personnalisé
+  @JsonProperty("updated_at")
+  private LocalDateTime updatedAt;
 
   public UserDTO() {}
 
-  public UserDTO(Long id, String name, String email, LocalDateTime created_at, LocalDateTime updated_at) {
+  public UserDTO(Long id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   // Getters et Setters
@@ -53,15 +59,15 @@ public class UserDTO {
     this.email = email;
   }
   public LocalDateTime getCreatedAt() {
-    return created_at;
+    return createdAt;
   }
-  public void setCreatedAt(LocalDateTime created_at) {
-    this.created_at = created_at;
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
   public LocalDateTime getUpdatedAt() {
-    return updated_at;
+    return updatedAt;
   }
-  public void setUpdatedAt(LocalDateTime updated_at) {
-    this.updated_at = updated_at;
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }

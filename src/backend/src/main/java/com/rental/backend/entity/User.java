@@ -1,5 +1,7 @@
 package com.rental.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
@@ -24,23 +26,27 @@ public class User {
 
   @Schema(description = "Date de création de l'utilisateur")
   @Column(name = "created_at")
-  private LocalDateTime created_at;
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("created_at")
+  private LocalDateTime createdAt;
 
   @Schema(description = "Date de mise à jour de l'utilisateur")
   @Column(name = "updated_at")
-  private LocalDateTime updated_at;
+  @JsonFormat(pattern = "yyyy/MM/dd")
+  @JsonProperty("updated_at")
+  private LocalDateTime updatedAt;
 
   public User() {
 
   }
 
-  public User(Long id, String email, String name, String password, LocalDateTime created_at, LocalDateTime updated_at) {
+  public User(Long id, String email, String name, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.email = email;
     this.name = name;
     this.password = password;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   public Long getId() {
@@ -72,17 +78,17 @@ public class User {
   }
 
   public LocalDateTime getCreatedAt() {
-    return created_at;
+    return createdAt;
   }
-  public void setCreatedAt(LocalDateTime created_at) {
-    this.created_at = created_at;
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
   public LocalDateTime getUpdatedAt() {
-    return updated_at;
+    return updatedAt;
   }
-  public void setUpdatedAt(LocalDateTime updated_at) {
-    this.updated_at = updated_at;
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
 }

@@ -35,7 +35,8 @@ public class UserService {
     user.setEmail(userDTO.getEmail());
     user.setName(userDTO.getName());
     user.setPassword(rawPassword);
-    // Vous pouvez également définir createdAt/updatedAt ici
+    user.setCreatedAt(java.time.LocalDateTime.now());
+    user.setUpdatedAt(java.time.LocalDateTime.now());
     user = userRepository.save(user);
     return convertToDTO(user);
   }

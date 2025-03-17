@@ -46,6 +46,8 @@ public class RentalService {
     rental.setPrice(rentalDTO.getPrice());
     rental.setSurface(rentalDTO.getSurface());
     rental.setPicture(rentalDTO.getPicture());
+    rental.setCreatedAt(rentalDTO.getCreatedAt());
+    rental.setCreatedAt(rentalDTO.getUpdatedAt());
 
     // Récupérer l'utilisateur connecté depuis le SecurityContext
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -84,6 +86,7 @@ public class RentalService {
     existingRental.setSurface(rentalDTO.getSurface());
     existingRental.setPicture(rentalDTO.getPicture());
     existingRental.setUpdatedAt(LocalDateTime.now());
+    existingRental.setCreatedAt(rentalDTO.getCreatedAt());
 
     // Sauvegarde le rental mis à jour
     Rental updatedRental = rentalRepository.save(existingRental);
