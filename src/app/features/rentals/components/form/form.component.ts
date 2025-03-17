@@ -65,7 +65,7 @@ export class FormComponent implements OnInit {
     console.log(rental);
     console.log(this.sessionService.user!.id);
   
-    if (rental && rental.ownerId !== this.sessionService.user?.id) {
+    if (rental && rental.owner_id !== this.sessionService.user?.id) {
       this.router.navigate(['/rentals']);
       return;
     }

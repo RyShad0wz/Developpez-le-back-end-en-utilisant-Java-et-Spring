@@ -1,54 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Rental } from 'src/app/features/rentals/interfaces/rental.interface';
 import { RentalResponse } from '../interfaces/api/rentalResponse.interface';
-import { environment } from 'src/environments/environment';
+import { RentalsResponse } from '../interfaces/api/rentalsResponse.interface';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class RentalsService {
 
-  private rentalsUrl = `${environment.baseUrl}/api/rentals`;
+  private pathService = 'api/rentals';
 
   constructor(private httpClient: HttpClient) { }
 
-  
-  public all(): Observable<Rental[]> {
-    return this.httpClient.get<Rental[]>(this.rentalsUrl).pipe(
-      catchError(error => {
-        console.error('Erreur lors de la récupération des rentals', error);
-        return throwError(error);
-      })
-    );
+  public all(): Observable<RentalsResponse> {
+    return this.httpClient.get<RentalsResponse>(this.pathService);
   }
 
   public detail(id: string): Observable<Rental> {
-    return this.httpClient.get<Rental>(`${this.rentalsUrl}/${id}`).pipe(
-      catchError(error => {
-        console.error(`Erreur lors de la récupération du rental avec id ${id}`, error);
-        return throwError(error);
-      })
-    );
+    return this.httpClient.get<Rental>(`${this.pathService}/${id}`);
   }
 
-  public create(rental: any): Observable<RentalResponse> {
-    return this.httpClient.post<RentalResponse>(this.rentalsUrl, rental).pipe(
-      catchError(error => {
-        console.error('Erreur lors de la création du rental', error);
-        return throwError(error);
-      })
-    );
+  public create(form: FormData): Observable<RentalResponse> {
+    return this.httpClient.post<RentalResponse>(this.pathService, form);
   }
 
-  public update(id: string, rental: any): Observable<RentalResponse> {
-    return this.httpClient.put<RentalResponse>(`${this.rentalsUrl}/${id}`, rental).pipe(
-      catchError(error => {
-        console.error(`Erreur lors de la mise à jour du rental avec id ${id}`, error);
-        return throwError(error);
-      })
-    );
+  public update(id: string, form: FormData): Observable<RentalResponse> {
+    return this.httpClient.put<RentalResponse>(`${this.pathService}/${id}`, form);
   }
 }

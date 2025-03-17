@@ -6,7 +6,7 @@ import { Rental } from 'src/app/features/rentals/interfaces/rental.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { MessageRequest } from '../../interfaces/api/messageRequest.interface';
 import { MessageResponse } from '../../interfaces/api/messageResponse.interface';
-import { MessageService } from '../../services/messages.service';
+import { MessagesService } from '../../services/messages.service';
 import { RentalsService } from '../../services/rentals.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class DetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private messageService: MessageService,
+    private messagesService: MessagesService,
     private rentalsService: RentalsService,
     private sessionService: SessionService,
     private matSnackBar: MatSnackBar) {
@@ -43,19 +43,17 @@ export class DetailComponent implements OnInit {
 
   public sendMessage(): void {
     const message = {
-      rentalId: this.rental!.id,
-      userId: this.sessionService.user!.id,
+      rental_id: this.rental!.id,
+      user_id: this.sessionService.user?.id,
       message: this.messageForm.value.message
     } as MessageRequest;
-  
-    this.messageService.send(message).subscribe(
+
+    this.messagesService.send(message).subscribe(
       (messageResponse: MessageResponse) => {
         this.initMessageForm();
         this.matSnackBar.open(messageResponse.message, "Close", { duration: 3000 });
-      }
-    );
+      });
   }
-  
 
   private initMessageForm() {
     this.messageForm = this.fb.group({
