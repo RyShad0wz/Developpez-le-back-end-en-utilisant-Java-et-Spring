@@ -10,8 +10,6 @@ import com.rental.backend.repository.RentalRepository;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MessageService {

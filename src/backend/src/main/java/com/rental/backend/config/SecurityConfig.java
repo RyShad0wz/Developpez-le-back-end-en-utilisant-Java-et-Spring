@@ -35,8 +35,8 @@ public class SecurityConfig {
       .authorizeHttpRequests(auth -> {
         // Autoriser l’accès public aux endpoints d’authentification et aux GET sur les utilisateurs et rentals
         auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
-        auth.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/me").permitAll();
-        auth.requestMatchers("/api/rentals/**", "/api/messages/**", "/api/user/**").authenticated();
+        auth.requestMatchers("/api/auth/register", "/api/auth/login").permitAll();
+        auth.requestMatchers("/api/rentals/**", "/api/messages/**", "/api/user/**", "/api/auth/me").authenticated();
       })
       .authenticationProvider(authenticationProvider)
       // Ajout du filtre JWT

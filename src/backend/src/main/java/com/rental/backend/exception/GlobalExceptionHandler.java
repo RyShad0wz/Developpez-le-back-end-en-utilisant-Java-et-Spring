@@ -1,5 +1,6 @@
-package com.rental.backend.exception;
+/*package com.rental.backend.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,27 +26,21 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", ex.getMessage());
-    return ResponseEntity.badRequest().body(response);
+    return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.CONFLICT.value());
-
     String errorMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+    String message = "Violation de contrainte d'intégrité : " + errorMessage;
+
     if (errorMessage.contains("unique constraint")) {
-      response.put("message", "Violation de contrainte d'unicité : " + errorMessage);
+      message = "Violation de contrainte d'unicité : " + errorMessage;
     } else if (errorMessage.contains("foreign key constraint")) {
-      response.put("message", "Violation de clé étrangère : " + errorMessage);
-    } else {
-      response.put("message", "Violation de contrainte d'intégrité : " + errorMessage);
+      message = "Violation de clé étrangère : " + errorMessage;
     }
 
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    return buildResponse(HttpStatus.CONFLICT, message);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -53,111 +48,95 @@ public class GlobalExceptionHandler {
     Map<String, Object> response = new HashMap<>();
     ex.getBindingResult().getFieldErrors().forEach(error ->
       response.put(error.getField(), error.getDefaultMessage()));
+
     response.put("status", HttpStatus.BAD_REQUEST.value());
     return ResponseEntity.badRequest().body(response);
   }
 
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.UNAUTHORIZED.value());
-    response.put("message", "Authentification requise : " + ex.getMessage());
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    return buildResponse(HttpStatus.UNAUTHORIZED, "Authentification requise : " + ex.getMessage());
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.FORBIDDEN.value());
-    response.put("message", "Accès refusé : " + ex.getMessage());
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    return buildResponse(HttpStatus.FORBIDDEN, "Accès refusé : " + ex.getMessage());
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<Map<String, Object>> handleArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", "Type de paramètre incorrect : " + ex.getName() + " doit être de type " + ex.getRequiredType().getSimpleName());
-    return ResponseEntity.badRequest().body(response);
+    return buildResponse(HttpStatus.BAD_REQUEST, "Type de paramètre incorrect : " + ex.getName() +
+      " doit être de type " + ex.getRequiredType().getSimpleName());
   }
 
   @ExceptionHandler(MissingServletRequestParameterException.class)
   public ResponseEntity<Map<String, Object>> handleMissingParameter(MissingServletRequestParameterException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", "Paramètre manquant : " + ex.getParameterName());
-    return ResponseEntity.badRequest().body(response);
+    return buildResponse(HttpStatus.BAD_REQUEST, "Paramètre manquant : " + ex.getParameterName());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<Map<String, Object>> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.METHOD_NOT_ALLOWED.value());
-    response.put("message", "Méthode HTTP non supportée : " + ex.getMethod());
-    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
+    return buildResponse(HttpStatus.METHOD_NOT_ALLOWED, "Méthode HTTP non supportée : " + ex.getMethod());
   }
 
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<Map<String, Object>> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
-    response.put("message", "Type de média non supporté : " + ex.getContentType());
-    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
+    return buildResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Type de média non supporté : " + ex.getContentType());
   }
 
   @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
   public ResponseEntity<Map<String, Object>> handleMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.NOT_ACCEPTABLE.value());
-    response.put("message", "Type de média non acceptable : " + ex.getMessage());
-    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+    return buildResponse(HttpStatus.NOT_ACCEPTABLE, "Type de média non acceptable : " + ex.getMessage());
   }
 
   @ExceptionHandler(NoHandlerFoundException.class)
-  public ResponseEntity<Map<String, Object>> handleNoHandlerFound(NoHandlerFoundException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.NOT_FOUND.value());
-    response.put("message", "Route non trouvée : " + ex.getRequestURL());
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+  public ResponseEntity<Map<String, Object>> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest request) {
+    String requestURI = request.getRequestURI();
+    if (requestURI.contains("/v3/api-docs") || requestURI.contains("/swagger-ui") || requestURI.contains("/swagger-resources")) {
+      // Ignorer les exceptions liées à Swagger
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>());
+    }
+
+    // Gérer les autres exceptions
+    return buildResponse(HttpStatus.NOT_FOUND, "Route non trouvée : " + ex.getRequestURL());
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", "Corps de la requête mal formé : " + ex.getMessage());
-    return ResponseEntity.badRequest().body(response);
+    return buildResponse(HttpStatus.BAD_REQUEST, "Corps de la requête mal formé : " + ex.getMessage());
   }
 
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.BAD_REQUEST.value());
-    response.put("message", "Violation de contrainte : " + ex.getMessage());
-    return ResponseEntity.badRequest().body(response);
+    return buildResponse(HttpStatus.BAD_REQUEST, "Violation de contrainte : " + ex.getMessage());
   }
 
   @ExceptionHandler(DuplicateResourceException.class)
   public ResponseEntity<Map<String, Object>> handleDuplicateResource(DuplicateResourceException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.CONFLICT.value());
-    response.put("message", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.NOT_FOUND.value());
-    response.put("message", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
-    Map<String, Object> response = new HashMap<>();
-    response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-    response.put("message", "Une erreur s'est produite");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex, HttpServletRequest request) {
+    String requestURI = request.getRequestURI();
+    if (requestURI.contains("/v3/api-docs") || requestURI.contains("/swagger-ui") || requestURI.contains("/swagger-resources")) {
+      // Ignorer les exceptions liées à Swagger
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>());
+    }
+
+    // Gérer les autres exceptions
+    return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur s'est produite");
   }
-}
+
+  private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
+    Map<String, Object> response = new HashMap<>();
+    response.put("status", status.value());
+    response.put("message", message);
+    return ResponseEntity.status(status).body(response);
+  }
+}*/
