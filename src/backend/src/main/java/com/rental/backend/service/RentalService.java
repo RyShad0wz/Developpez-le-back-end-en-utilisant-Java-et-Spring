@@ -3,6 +3,8 @@ package com.rental.backend.service;
 import com.rental.backend.dto.RentalDTO;
 import com.rental.backend.entity.Rental;
 import com.rental.backend.entity.User;
+import com.rental.backend.exception.DuplicateResourceException;
+import com.rental.backend.exception.ResourceNotFoundException;
 import com.rental.backend.repository.RentalRepository;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ public class RentalService {
 
   public RentalDTO getRentalById(Long id){
     Rental rental = rentalRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Location non trouvée"));
+      .orElseThrow(() -> new ResourceNotFoundException("Location non trouvée"));
     return convertToDTO(rental);
   }
 
@@ -46,6 +48,11 @@ public class RentalService {
     rental.setPrice(rentalDTO.getPrice());
     rental.setSurface(rentalDTO.getSurface());
     rental.setPicture(rentalDTO.getPicture());
+
+    if (rentalRepository.existsByPicture(rental.getPicture())) {
+      throw new ResourceNotFoundException("L'URL de l'image existe déjà.");
+    }
+
     rental.setCreatedAt(rentalDTO.getCreatedAt());
     rental.setCreatedAt(rentalDTO.getUpdatedAt());
 
@@ -53,7 +60,7 @@ public class RentalService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();  // suppose que le username est l'email
     User owner = userRepository.findByEmail(email)
-      .orElseThrow(() -> new RuntimeException("Propriétaire non trouvé"));
+      .orElseThrow(() -> new ResourceNotFoundException("Propriétaire non trouvé"));
     rental.setOwner(owner);
 
     // Définir createdAt et updatedAt si nécessaire
@@ -79,6 +86,14 @@ public class RentalService {
 
     Rental existingRental = rentalRepository.findById(id)
       .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+
+    // Vérifie si l'URL de l'image a changé
+    if (!existingRental.getPicture().equals(rentalDTO.getPicture())) {
+      // Vérifie si la nouvelle URL existe déjà
+      if (rentalRepository.existsByPicture(rentalDTO.getPicture())) {
+        throw new DuplicateResourceException("L'URL de l'image existe déjà.");
+      }
+    }
 
     existingRental.setName(rentalDTO.getName());
     existingRental.setDescription(rentalDTO.getDescription());

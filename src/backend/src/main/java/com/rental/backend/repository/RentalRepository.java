@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
+  boolean existsByPicture(String picture);
 }
 

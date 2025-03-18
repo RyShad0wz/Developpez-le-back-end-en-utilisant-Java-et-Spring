@@ -2,6 +2,7 @@ package com.rental.backend.service;
 
 import com.rental.backend.dto.UserDTO;
 import com.rental.backend.entity.User;
+import com.rental.backend.exception.ResourceNotFoundException;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,13 @@ public class UserService {
 
   public UserDTO getUserById(Long id){
     User user = userRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+      .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
     return convertToDTO(user);
   }
 
   public UserDTO getUserByEmail(String email) {
     User user = userRepository.findByEmail(email)
-      .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+      .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
     return convertToDTO(user);
   }
 
