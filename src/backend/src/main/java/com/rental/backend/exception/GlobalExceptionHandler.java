@@ -1,4 +1,4 @@
-/*package com.rental.backend.exception;
+package com.rental.backend.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -92,12 +92,11 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<Map<String, Object>> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest request) {
     String requestURI = request.getRequestURI();
-    if (requestURI.contains("/v3/api-docs") || requestURI.contains("/swagger-ui") || requestURI.contains("/swagger-resources")) {
-      // Ignorer les exceptions liées à Swagger
+
+    if (isSwaggerRequest(requestURI)) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>());
     }
 
-    // Gérer les autres exceptions
     return buildResponse(HttpStatus.NOT_FOUND, "Route non trouvée : " + ex.getRequestURL());
   }
 
@@ -124,13 +123,12 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex, HttpServletRequest request) {
     String requestURI = request.getRequestURI();
-    if (requestURI.contains("/v3/api-docs") || requestURI.contains("/swagger-ui") || requestURI.contains("/swagger-resources")) {
-      // Ignorer les exceptions liées à Swagger
+
+    if (isSwaggerRequest(requestURI)) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>());
     }
 
-    // Gérer les autres exceptions
-    return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur s'est produite");
+    return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur s'est produite : " + ex.getMessage());
   }
 
   private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
@@ -139,4 +137,11 @@ public class GlobalExceptionHandler {
     response.put("message", message);
     return ResponseEntity.status(status).body(response);
   }
-}*/
+
+  private boolean isSwaggerRequest(String requestURI) {
+    return requestURI.contains("/v3/api-docs") ||
+      requestURI.contains("/swagger-ui") ||
+      requestURI.contains("/swagger-resources") ||
+      requestURI.contains("/swagger-ui.html");
+  }
+}
