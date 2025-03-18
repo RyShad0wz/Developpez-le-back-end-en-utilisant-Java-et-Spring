@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +26,7 @@ public class Rental {
   private Double price;
 
   @Schema(description = "URL de l'image", example = "https://www.example.com/picture.jpg")
+  @Column(unique = true)
   private String picture;
 
   @Schema(description = "Description de la location", example = "Appartement cosy avec vue sur la mer")
@@ -67,8 +67,6 @@ public class Rental {
     this.created_at = created_at;
     this.updated_at = updated_at;
   }
-
-  // ... getters & setters ...
 
   public Long getId() {
     return id;
