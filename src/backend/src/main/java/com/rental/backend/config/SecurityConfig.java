@@ -4,7 +4,6 @@ import com.rental.backend.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -37,11 +36,7 @@ public class SecurityConfig {
         // Autoriser l’accès public aux endpoints d’authentification et aux GET sur les utilisateurs et rentals
         auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
         auth.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/me").permitAll();
-        auth.requestMatchers(HttpMethod.GET, "/api/rentals/**").permitAll();
-        auth.requestMatchers(HttpMethod.GET, "/api/messages/**").permitAll();
-        auth.requestMatchers(HttpMethod.GET, "/api/user/**").permitAll();
-        // Pour le reste, l’authentification est requise
-        auth.anyRequest().authenticated();
+        auth.requestMatchers("/api/rentals/**", "/api/messages/**", "/api/user/**").authenticated();
       })
       .authenticationProvider(authenticationProvider)
       // Ajout du filtre JWT
