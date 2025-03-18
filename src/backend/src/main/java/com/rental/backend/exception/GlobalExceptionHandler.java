@@ -1,4 +1,4 @@
-package com.rental.backend.exception;
+/* package com.rental.backend.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -32,15 +32,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
     String errorMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
-    String message = "Violation de contrainte d'intégrité : " + errorMessage;
-
-    if (errorMessage.contains("unique constraint")) {
-      message = "Violation de contrainte d'unicité : " + errorMessage;
-    } else if (errorMessage.contains("foreign key constraint")) {
-      message = "Violation de clé étrangère : " + errorMessage;
-    }
-
-    return buildResponse(HttpStatus.CONFLICT, message);
+    return buildResponse(HttpStatus.CONFLICT, "Erreur de base de données : " + errorMessage);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -55,18 +47,17 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException ex) {
-    return buildResponse(HttpStatus.UNAUTHORIZED, "Authentification requise : " + ex.getMessage());
+    return buildResponse(HttpStatus.UNAUTHORIZED, "Authentification requise.");
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
-    return buildResponse(HttpStatus.FORBIDDEN, "Accès refusé : " + ex.getMessage());
+    return buildResponse(HttpStatus.FORBIDDEN, "Accès refusé.");
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<Map<String, Object>> handleArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
-    return buildResponse(HttpStatus.BAD_REQUEST, "Type de paramètre incorrect : " + ex.getName() +
-      " doit être de type " + ex.getRequiredType().getSimpleName());
+    return buildResponse(HttpStatus.BAD_REQUEST, "Type de paramètre incorrect.");
   }
 
   @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -76,38 +67,35 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<Map<String, Object>> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
-    return buildResponse(HttpStatus.METHOD_NOT_ALLOWED, "Méthode HTTP non supportée : " + ex.getMethod());
+    return buildResponse(HttpStatus.METHOD_NOT_ALLOWED, "Méthode HTTP non supportée.");
   }
 
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<Map<String, Object>> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
-    return buildResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Type de média non supporté : " + ex.getContentType());
+    return buildResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Type de média non supporté.");
   }
 
   @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
   public ResponseEntity<Map<String, Object>> handleMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex) {
-    return buildResponse(HttpStatus.NOT_ACCEPTABLE, "Type de média non acceptable : " + ex.getMessage());
+    return buildResponse(HttpStatus.NOT_ACCEPTABLE, "Type de média non acceptable.");
   }
 
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<Map<String, Object>> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest request) {
-    String requestURI = request.getRequestURI();
-
-    if (isSwaggerRequest(requestURI)) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>());
+    if (isSwaggerRequest(request.getRequestURI())) {
+      return ResponseEntity.notFound().build();
     }
-
-    return buildResponse(HttpStatus.NOT_FOUND, "Route non trouvée : " + ex.getRequestURL());
+    return buildResponse(HttpStatus.NOT_FOUND, "Route non trouvée.");
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-    return buildResponse(HttpStatus.BAD_REQUEST, "Corps de la requête mal formé : " + ex.getMessage());
+    return buildResponse(HttpStatus.BAD_REQUEST, "Corps de la requête mal formé.");
   }
 
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
-    return buildResponse(HttpStatus.BAD_REQUEST, "Violation de contrainte : " + ex.getMessage());
+    return buildResponse(HttpStatus.BAD_REQUEST, "Violation de contrainte.");
   }
 
   @ExceptionHandler(DuplicateResourceException.class)
@@ -122,13 +110,10 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex, HttpServletRequest request) {
-    String requestURI = request.getRequestURI();
-
-    if (isSwaggerRequest(requestURI)) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>());
+    if (isSwaggerRequest(request.getRequestURI())) {
+      return ResponseEntity.ok(new HashMap<>());
     }
-
-    return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur s'est produite : " + ex.getMessage());
+    return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erreur serveur.");
   }
 
   private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
@@ -144,4 +129,4 @@ public class GlobalExceptionHandler {
       requestURI.contains("/swagger-resources") ||
       requestURI.contains("/swagger-ui.html");
   }
-}
+} */
