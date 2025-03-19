@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Objet de transfert pour l'inscription des utilisateurs")
 public class UserRegistrationRequest {
 
-  @Schema(description = "Nom de l'utilisateur")
+  @Schema(description = "Nom de l'utilisateur" , example = "John Doe")
   private String name;
 
-  @Schema(description = "Adresse email de l'utilisateur")
+  @Schema(description = "Adresse email de l'utilisateur", example = "john@example.com")
   private String email;
 
-  @Schema(description = "Mot de passe de l'utilisateur")
+  @Schema(description = "Mot de passe de l'utilisateur", example = "pswd")
   private String password;
   // Getters et setters
 

@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Objet de transfert pour la connexion")
 public class LoginRequest {
 
-  @Schema(description = "Adresse email de l'utilisateur")
+  @Schema(description = "Adresse email de l'utilisateur", example = "john@example.com")
   private String email;
 
-  @Schema(description = "Mot de passe de l'utilisateur")
+  @Schema(description = "Mot de passe de l'utilisateur", example = "secret")
   private String password;
 
   // getters, setters

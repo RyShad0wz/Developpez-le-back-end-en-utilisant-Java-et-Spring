@@ -12,10 +12,10 @@ public class RentalDTO {
   @Schema(description = "Identifiant unique", example = "1")
   private Long id;
 
-  @Schema(description = "Nom de la location", example = "Appartement T2")
+  @Schema(description = "Nom de la location", example = "New Home")
   private String name;
 
-  @Schema(description = "Description de la location", example = "Appartement de 50m2")
+  @Schema(description = "Description de la location", example = "New Home for Rent")
   private String description;
 
   @Schema(description = "Prix de la location", example = "500")
@@ -24,7 +24,7 @@ public class RentalDTO {
   @Schema(description = "Surface de la location", example = "50")
   private Double surface;
 
-  @Schema(description = "URL de l'image de la location", example = "https://example.com/image.jpg")
+  @Schema(description = "URL de l'image de la location", example = "https://www.demeures-cote-dargent.com/wp-content/uploads/2023/07/Groupe_InCA-M8_010.jpg")
   private String picture;
 
   @Schema(description = "Identifiant du propriétaire", example = "1")
