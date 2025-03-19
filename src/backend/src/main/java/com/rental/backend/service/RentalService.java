@@ -103,7 +103,7 @@ public class RentalService {
     existingRental.setPrice(rentalDTO.getPrice());
     existingRental.setSurface(rentalDTO.getSurface());
     existingRental.setPicture(rentalDTO.getPicture());
-    existingRental.setUpdatedAt(rentalDTO.getUpdatedAt());
+    existingRental.setUpdatedAt(LocalDateTime.now());
     existingRental.setCreatedAt(LocalDateTime.now());
 
     // Sauvegarde le rental mis à jour
