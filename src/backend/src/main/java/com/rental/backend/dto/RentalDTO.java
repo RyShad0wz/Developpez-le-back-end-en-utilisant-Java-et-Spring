@@ -31,12 +31,12 @@ public class RentalDTO {
   @JsonProperty("owner_id")
   private Long ownerId;
 
-  @Schema(description = "Date de création de la location")
+  @Schema(description = "Date de création de la location", example = "2021-06-01")
   @JsonFormat(pattern = "yyyy/MM/dd")
   @JsonProperty("created_at")
   private LocalDateTime createdAt;
 
-  @Schema(description = "Date de mise à jour de la location")
+  @Schema(description = "Date de mise à jour de la location", example = "2021-06-01")
   @JsonFormat(pattern = "yyyy/MM/dd")
   @JsonProperty("updated_at")
   private LocalDateTime updatedAt;

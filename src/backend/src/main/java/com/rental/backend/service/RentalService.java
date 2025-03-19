@@ -77,8 +77,8 @@ public class RentalService {
     dto.setSurface(rental.getSurface());
     dto.setPicture(rental.getPicture());
     dto.setOwnerId(rental.getOwner().getId());
-    dto.setCreatedAt(rental.getCreatedAt());
-    dto.setUpdatedAt(rental.getUpdatedAt());
+    dto.setCreatedAt(LocalDateTime.now());
+    dto.setUpdatedAt(LocalDateTime.now());
     return dto;
   }
 
@@ -87,12 +87,15 @@ public class RentalService {
     Rental existingRental = rentalRepository.findById(id)
       .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
 
-    // Vérifie si l'URL de l'image a changé
-    if (!existingRental.getPicture().equals(rentalDTO.getPicture())) {
-      // Vérifie si la nouvelle URL existe déjà
-      if (rentalRepository.existsByPicture(rentalDTO.getPicture())) {
-        throw new DuplicateResourceException("L'URL de l'image existe déjà.");
+    if (rentalDTO.getPicture() != null) {
+      // Vérifie si l'URL de l'image a changé
+      if (!existingRental.getPicture().equals(rentalDTO.getPicture())) {
+        // Vérifie si la nouvelle URL existe déjà
+        if (rentalRepository.existsByPicture(rentalDTO.getPicture())) {
+          throw new DuplicateResourceException("L'URL de l'image existe déjà.");
+        }
       }
+      existingRental.setPicture(rentalDTO.getPicture());
     }
 
     existingRental.setName(rentalDTO.getName());
@@ -100,8 +103,8 @@ public class RentalService {
     existingRental.setPrice(rentalDTO.getPrice());
     existingRental.setSurface(rentalDTO.getSurface());
     existingRental.setPicture(rentalDTO.getPicture());
-    existingRental.setUpdatedAt(LocalDateTime.now());
-    existingRental.setCreatedAt(rentalDTO.getCreatedAt());
+    existingRental.setUpdatedAt(rentalDTO.getUpdatedAt());
+    existingRental.setCreatedAt(LocalDateTime.now());
 
     // Sauvegarde le rental mis à jour
     Rental updatedRental = rentalRepository.save(existingRental);

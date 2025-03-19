@@ -25,8 +25,8 @@ public class Rental {
   @Schema(description = "Prix de la location par nuit", example = "50.0")
   private Double price;
 
-  @Schema(description = "URL de l'image", example = "https://www.example.com/picture.jpg")
-  @Column(unique = true)
+  @Schema(description = "URL de l'image")
+  @Column(unique = true, length = 2048)
   private String picture;
 
   @Schema(description = "Description de la location", example = "Appartement cosy avec vue sur la mer")
