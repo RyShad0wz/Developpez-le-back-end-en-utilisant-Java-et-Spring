@@ -5,6 +5,7 @@ import com.rental.backend.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -100,7 +101,23 @@ public class RentalController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
       description = "Nouvelles données de la location",
       required = true,
-      content = @Content(schema = @Schema(implementation = RentalDTO.class)))
+      content = @Content(
+        schema = @Schema(implementation = RentalDTO.class),
+        examples = @ExampleObject(
+          value = """
+                {
+                  "id": 1,
+                  "name": "New Home",
+                  "description": "New Home for Rent",
+                  "price": 500,
+                  "surface": 50,
+                  "picture": "https://www.demeures-cote-dargent.com/wp-content/uploads/2023/07/Groupe_InCA-M8_010.jpg",
+                  "owner_id": 1
+                }
+                """
+        )
+      )
+    )
     @Valid @RequestBody RentalDTO rentalDTO
   ) {
     RentalDTO updatedRental = rentalService.update(id, rentalDTO);
