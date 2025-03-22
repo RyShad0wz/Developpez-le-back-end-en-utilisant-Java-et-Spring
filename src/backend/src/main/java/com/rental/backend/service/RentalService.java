@@ -50,7 +50,7 @@ public class RentalService {
     rental.setPicture(rentalDTO.getPicture());
 
     if (rentalRepository.existsByPicture(rental.getPicture())) {
-      throw new ResourceNotFoundException("L'URL de l'image existe déjà.");
+      throw new DuplicateResourceException("L'URL de l'image existe déjà.");
     }
 
     rental.setCreatedAt(rentalDTO.getCreatedAt());
@@ -85,7 +85,7 @@ public class RentalService {
   public RentalDTO update(Long id, RentalDTO rentalDTO) {
 
     Rental existingRental = rentalRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+      .orElseThrow(() -> new ResourceNotFoundException("Rental not found with id: " + id));
 
     if (rentalDTO.getPicture() != null) {
       // Vérifie si l'URL de l'image a changé

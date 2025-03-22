@@ -5,10 +5,12 @@ import com.rental.backend.dto.MessageResponseDTO;
 import com.rental.backend.entity.Message;
 import com.rental.backend.entity.Rental;
 import com.rental.backend.entity.User;
+import com.rental.backend.exception.ResourceNotFoundException;
 import com.rental.backend.repository.MessageRepository;
 import com.rental.backend.repository.RentalRepository;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,10 +28,10 @@ public class MessageService {
   public MessageResponseDTO sendMessage(MessageDTO messageDTO) {
     // Récupérer la location et l'utilisateur
     Rental rental = rentalRepository.findById(messageDTO.getRentalId())
-      .orElseThrow(() -> new IllegalArgumentException("Location non trouvée"));
+      .orElseThrow(() -> new ResourceNotFoundException("Location non trouvée"));
 
     User user = userRepository.findById(messageDTO.getUserId())
-      .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+      .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
     // Créer et sauvegarder le message
     Message message = new Message();

@@ -2,9 +2,11 @@ package com.rental.backend.service;
 
 import com.rental.backend.dto.*;
 import com.rental.backend.entity.User;
+import com.rental.backend.exception.InvalidCredentialsException;
 import com.rental.backend.repository.UserRepository;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -63,12 +65,12 @@ public class AuthService {
         )
       );
     } catch (AuthenticationException e) {
-      throw new RuntimeException("Email ou mot de passe invalide");
+      throw new InvalidCredentialsException("Email ou mot de passe invalide");
     }
 
 
     var user = userRepository.findByEmail(request.getEmail())
-      .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+      .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable"));
 
     var userDetails = org.springframework.security.core.userdetails.User.builder()
       .username(user.getEmail())
