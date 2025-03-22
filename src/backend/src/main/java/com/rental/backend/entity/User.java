@@ -16,6 +16,7 @@ public class User {
   private Long id;
 
   @Schema(description = "Adresse email", example = "john@example.com")
+  @Column(unique = true)
   private String email;
 
   @Schema(description = "Nom de l'utilisateur", example = "John Doe")
