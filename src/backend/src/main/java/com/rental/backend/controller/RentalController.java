@@ -88,8 +88,7 @@ public class RentalController {
                       "name": "New Home",
                       "surface": 50.0,
                       "price": 500.0,
-                      "description": "New Home for Rent",
-                      "picture": "Fichier image (JPEG, PNG)"
+                      "description": "New Home for Rent"
                     }
                     """
       )
@@ -100,18 +99,22 @@ public class RentalController {
     @RequestParam("surface") @NotNull @Positive Double surface,
     @RequestParam("price") @NotNull @Positive Double price,
     @RequestParam("description") @NotBlank String description,
-    @RequestParam("picture") @NotNull MultipartFile picture
+    @RequestParam(value = "picture", required = false) MultipartFile picture // Champ facultatif
   ) throws IOException {
-    // Uploader l'image vers Cloudinary
-    String pictureUrl = cloudinaryService.uploadImage(picture);
-
-    // Créer le DTO avec l'URL de l'image
+    // Créer le DTO
     RentalDTO rentalDTO = new RentalDTO();
     rentalDTO.setName(name);
     rentalDTO.setSurface(surface);
     rentalDTO.setPrice(price);
     rentalDTO.setDescription(description);
-    rentalDTO.setPicture(pictureUrl);
+
+    // Uploader l'image si elle est fournie
+    if (picture != null && !picture.isEmpty()) {
+      String pictureUrl = cloudinaryService.uploadImage(picture);
+      rentalDTO.setPicture(pictureUrl);
+    } else {
+      rentalDTO.setPicture(null); // Ou une URL par défaut
+    }
 
     // Enregistrer la location dans la base de données
     RentalDTO createdRental = rentalService.createRental(rentalDTO);
