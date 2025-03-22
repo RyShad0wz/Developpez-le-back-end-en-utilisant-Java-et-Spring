@@ -10,7 +10,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
@@ -38,6 +44,9 @@ public class SecurityConfig {
         auth.requestMatchers("/api/auth/register", "/api/auth/login").permitAll();
         auth.requestMatchers("/api/rentals/**", "/api/messages/**", "/api/user/**", "/api/auth/me").authenticated();
       })
+      .exceptionHandling(exceptions -> exceptions
+        .authenticationEntryPoint(customAuthenticationEntryPoint()) // Gestion personnalisée des erreurs d'authentification
+      )
       .authenticationProvider(authenticationProvider)
       // Ajout du filtre JWT
       .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -45,7 +54,14 @@ public class SecurityConfig {
     return http.build();
   }
 
-
+  @Bean
+  public AuthenticationEntryPoint customAuthenticationEntryPoint() {
+    return (HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException authException) -> {
+      response.setStatus(HttpStatus.UNAUTHORIZED.value()); // Renvoyer une 401
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE); // Définir le type de contenu
+      response.getWriter().write("{\"message\": \"error\"}"); // Corps de la réponse
+    };
+  }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
