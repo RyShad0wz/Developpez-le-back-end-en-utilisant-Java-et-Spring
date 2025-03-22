@@ -76,6 +76,25 @@ public class RentalController {
     @ApiResponse(responseCode = "400", description = "Données de la location invalides"),
     @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
   })
+  @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    description = "Données de la location à créer",
+    required = true,
+    content = @Content(
+      mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+      schema = @Schema(implementation = RentalDTO.class),
+      examples = @ExampleObject(
+        value = """
+                    {
+                      "name": "New Home",
+                      "surface": 50.0,
+                      "price": 500.0,
+                      "description": "New Home for Rent",
+                      "picture": "Fichier image (JPEG, PNG)"
+                    }
+                    """
+      )
+    )
+  )
   public ResponseEntity<Map<String, Object>> createRental(
     @RequestParam("name") @NotBlank String name,
     @RequestParam("surface") @NotNull @Positive Double surface,
@@ -113,6 +132,24 @@ public class RentalController {
     @ApiResponse(responseCode = "404", description = "Location non trouvée"),
     @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
   })
+  @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    description = "Données de la location à mettre à jour",
+    required = true,
+    content = @Content(
+      mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+      schema = @Schema(implementation = RentalDTO.class),
+      examples = @ExampleObject(
+        value = """
+                    {
+                      "name": "Updated Home",
+                      "surface": 60.0,
+                      "price": 600.0,
+                      "description": "Updated Home for Rent"
+                    }
+                    """
+      )
+    )
+  )
   public ResponseEntity<Map<String, Object>> updateRental(
     @Parameter(description = "ID de la location à mettre à jour", example = "1", required = true)
     @PathVariable Long id,
@@ -120,7 +157,7 @@ public class RentalController {
     @RequestParam("surface") @NotNull @Positive Double surface,
     @RequestParam("price") @NotNull @Positive Double price,
     @RequestParam("description") @NotBlank String description
-  ) throws IOException {
+  ) {
     // Créer le DTO
     RentalDTO rentalDTO = new RentalDTO();
     rentalDTO.setName(name);
